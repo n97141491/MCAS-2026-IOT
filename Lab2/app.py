@@ -13,19 +13,26 @@ current_index = 0  # 全域索引
 @app.route("/")
 def index():
     global current_index
+    current_index = current_index % len(images)
     img = images[current_index]
-    return render_template("index.html", image=img, idx=current_index, total=len(images))
+
+    return render_template(
+        "index.html",
+        image=img,
+        idx=current_index,
+        total=len(images)
+    )
 
 @app.route("/next")
 def next_img():
     global current_index
-    current_index += 1
+    current_index = (current_index + 1) % len(images)
     return redirect(url_for("index"))
-
+    
 @app.route("/prev")
 def prev_img():
     global current_index
-    current_index -= 1
+    current_index = (current_index - 1) % len(images)
     return redirect(url_for("index"))
 
 if __name__ == "__main__":
